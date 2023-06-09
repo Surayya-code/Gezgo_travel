@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gezgo_travel_app/app/resources/app_assets.dart';
-import 'package:gezgo_travel_app/ui/screens/signin_screen.dart';
+import 'package:gezgo_travel_app/ui/screens/getStarted_screen.dart';
 import 'package:gezgo_travel_app/ui/style/app_text_styles.dart';
 
 import '../widgets/onboard_button.dart';
@@ -103,7 +103,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const SigninScreen()),
+                                          const GetStartedScreen()),
                                 );
                               }
                             });

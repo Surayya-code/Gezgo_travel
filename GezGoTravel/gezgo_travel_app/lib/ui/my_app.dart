@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gezgo_travel_app/ui/theme/app_theme.dart';
 
 import 'screens/onBoarding_screen.dart';
 
@@ -11,9 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'GezGo Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.light,
       home:  const OnBoardingScreen(),
     );
   }
