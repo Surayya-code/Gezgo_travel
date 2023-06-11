@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gezgo_travel_app/ui/theme/app_theme.dart';
 
-import 'screens/onBoarding_screen.dart';
+import 'screens/on_boarding_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

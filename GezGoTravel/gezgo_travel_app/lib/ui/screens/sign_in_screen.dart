@@ -1,20 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:gezgo_travel_app/app/resources/app_assets.dart';
-import 'package:gezgo_travel_app/ui/screens/onBoarding_screen.dart';
+import 'package:gezgo_travel_app/ui/screens/forgot_password_screen.dart';
+import 'package:gezgo_travel_app/ui/screens/home_screen.dart';
 import 'package:gezgo_travel_app/ui/theme/app_colors.dart';
 import 'package:gezgo_travel_app/ui/widgets/onboard_button.dart';
 
-class GetStartedScreen extends StatefulWidget {
-  const GetStartedScreen({super.key});
+import '../widgets/global_text_input.dart';
+import 'sign_up_screen.dart';
+
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<GetStartedScreen> createState() => _GetStartedScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _GetStartedScreenState extends State<GetStartedScreen> {
-    final _formKey = GlobalKey<FormState>();
-    final emailRegex = RegExp(
+class _SignInScreenState extends State<SignInScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+  final emailFocus = FocusNode();
+  final passwFocus = FocusNode();
+  final emailRegex = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passController.dispose();
+    emailFocus.dispose();
+    passwFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +52,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 child: Column(
                   children: [
                     const SizedBox(
-                      height: 140,
+                      height: 80,
                     ),
                     Center(
                       child: Container(
@@ -50,8 +67,8 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                       height: 20,
                     ),
                     Padding(
-                      padding:
-                        const  EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 8),
                       child: Container(
                         decoration: BoxDecoration(
                             color: Colors.white.withOpacity(0.8),
@@ -76,20 +93,39 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                   const SizedBox(
                                     height: 10,
                                   ),
-                                  TextFormField(
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return "Email isn't empty!";
-                                       }else if(!emailRegex.hasMatch(value)){
-                                          return "Enter Valid Email!";
-                                       }
-                                        return null;
-                                    },
+                                  GlobalTextInput(
+                                    regex: emailRegex,
                                     keyboardType: TextInputType.emailAddress,
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      hintText: "Email address",
-                                    ),
+                                    hintText: "Email address",
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Email isn't empty!";
+                                      } else if (!emailRegex.hasMatch(value)) {
+                                        return "Enter Valid Email!";
+                                      }
+                                      return null;
+                                    },
+                                    obscureText: false,
+                                    controller: emailController,
+                                    focusNode: emailFocus,
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  GlobalTextInput(
+                                    keyboardType: TextInputType.visiblePassword,
+                                    hintText: "Password",
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return "Password isn't empty!";
+                                      } else if (value.length < 6) {
+                                        return "Password must not be less than 6 characters!";
+                                      }
+                                      return null;
+                                    },
+                                    controller: passController,
+                                    focusNode: passwFocus,
+                                    obscureText: true,
                                   ),
                                   const SizedBox(
                                     height: 10,
@@ -97,12 +133,15 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                   OnBoardingButton(
                                     text: "Sign in",
                                     onTap: () {
-                                      if(_formKey.currentState!.validate()){
+                                      if (_formKey.currentState!.validate()) {
                                         //const CircularProgressIndicator();
-                                        Navigator.of(context).push(
+                                        Navigator.push(
+                                          context,
                                           MaterialPageRoute(
-                                            builder: (context)=>
-                                            const OnBoardingScreen()));
+                                              builder: (context) =>
+                                                  const HomeScreen()),
+                                        );
+                                        emailController.clear();
                                       }
                                     },
                                   ),
@@ -110,7 +149,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                     height: 15,
                                   ),
                                   Row(
-                                    children:const [
+                                    children: const [
                                       Expanded(
                                           child: Divider(
                                               thickness: 1.0,
@@ -159,15 +198,43 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                                       ),
                                     ],
                                   ),
-                                  TextButton(
-                                    onPressed: () {},
-                                    child: const Text(
-                                      "Sign Up",
-                                      style: TextStyle(
-                                          color: AppColors.oppositeColor,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
+                                 const SizedBox(height: 10,),
+                                   InkWell(
+                                    onTap: (){
+                                       Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const ForgotPasswordScreen()));
+                                    },
+                                     child: const Text(
+                                            "Forgot password?",
+                                            style: TextStyle(
+                                                color: AppColors.oppositeColor,
+                                                fontSize: 14.0,
+                                                fontWeight: FontWeight.normal),
+                                          ),
+                                   ),
+                                      
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                       const Text("Don't have account? "),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SignUpScreen()));
+                                        },
+                                        child: const Text(
+                                          "Sign Up",
+                                          style: TextStyle(
+                                              color: AppColors.oppositeColor,
+                                              fontSize: 18.0,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const Text("By registering you agree to our"),
                                   TextButton(

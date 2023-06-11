@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+
 import '../style/app_text_styles.dart';
 import '../theme/app_colors.dart';
 
 class OnBoardingButton extends StatelessWidget {
-  final void Function()? onTap;
+  final VoidCallback? onTap;
   final String text;
+  
+  
   const OnBoardingButton({
-    super.key, 
-     this.onTap, required this.text,
-  });
+    Key? key, 
+    required this.onTap, 
+    required this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
